@@ -18,6 +18,28 @@ export default class Pool {
     * 获取对应的对象池
     * */
     getPoolBySign(name){
-        return this[__.poolDic][name] || ( this[__.poolDic][name] == []))
+        return this[__.poolDic][name] || ( this[__.poolDic][name] == [])
+    }
+
+    /*
+    * 根据传入的对象标识符，查询对象池
+    * 对象池为空创建新的类，否则从对象池中获取
+    * */
+    getItemByClass(name, className) {
+        let pool = this.getPoolBySign(name)
+
+        let result = ( pool.length
+                        ? pool.shift()
+                        : new className()
+                    )
+        return result
+    }
+
+    /*
+    * 将对象回收到对象池
+    * 方便后继续使用
+    * */
+    recover(name, instance){
+        this.getPoolBySign(name).push(instance)
     }
 }
