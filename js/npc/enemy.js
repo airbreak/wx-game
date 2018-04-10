@@ -1,24 +1,53 @@
+import Animation from '../base/animation'
+import DataBus from '../databus'
+
+const ENEMY_IMG_SRC = 'images/enemy.png'
+const ENEMY_WIDTH = 60
+const ENEMY_HEIGHT = 60
+
 const __ = {
-  poolDic: Symbol('poolDic')
+  speed: Symbol('speed')
 }
 
-/*
-* 简易的对象池实现
-* 用于对象的存贮和重复使用
-* 可以有效减少对对象创建开销和避免频繁的垃圾回收
-* 提高游戏性能
-*/
-export default class Pool {
+let databus = new DataBus()
+
+function rnd(start, end) {
+    return Math.floor(Math.random() * (end - start) + start)
+}
+
+export default  class Ememy extends Animation {
   constructor() {
-    this[__.poolDic] = {}
+      super(ENEMY_IMG_SRC, ENEMY_WIDTH, ENEMY_HEIGHT)
+      this.iniExplosionAnimation()
   }
-  /* 
-  * 根据对象标识符
-  * 获取对应的对象池
-  */
-  getPoolBySign(name) {
-    return this[__.poolDic][name] || (this[__.poolDic][name] = [])
+
+  init(speed) {
+      this._x = rnd(0,window.innerWidth - ENEMY_WIDTH)
+      this._y = -this.height
+
+      this[__.speed] = speed
+
+      this.visible = true
+  }
+
+  // 预设爆炸的动画帧呢
+  iniExplosionAnimation() {
+      let frames = []
+
+      const EXPLO_IMG_PREFIX = 'images/explosion'
+      const EXPLO_FRAME_COUNT = 19
+
+      for( let i = 0; i<EXPLO_FRAME_COUNT;i++) {
+        frames.push(EXPLO_IMG_PREFIX + ( i + 1) + '.png')
+      }
+      this.initFrames(frames)
+  }
+
+  // 每一帧更新子弹的位置
+  update() {
+    this.y += this[__.speed]
+     // 对象回放
+     if( this.y > window.innerHeight + this.height)
+       databus.removeEnemey(this)
   }
 }
-
-
