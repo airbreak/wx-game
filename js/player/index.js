@@ -2,7 +2,7 @@
  * Created by jiangjianming@bmkp.cn on 2018/4/10.
  */
 import Sprite from '../base/sprite'
-import Bullet from '../bullet'
+import Bullet from 'bullet'
 import DataBus from '../databus'
 
 const screenWidth = window.innerWidth
@@ -79,32 +79,25 @@ export default  class Player extends Sprite {
     initEvent() {
         canvas.addEventListener('touchstart', ((e)=>{
             e.preventDefault()
-
             let x = e.touches[0].clientX
             let y =e.touches[0].clientY
-
             if(this.checkIsFingerOnAir(x, y)){
                 this.touched = true
                 this.setAirPosAcrossFingerPosZ(x,y)
             }
         }).bind(this))
-
         canvas.addEventListener('touchmove', ((e)=>{
             e.preventDefault()
-
             let x = e.touches[0].clientX
             let y = e.touches[0].clientY
-
             if( this.touched)
                 this.setAirPosAcrossFingerPosZ(x, y)
         }).bind(this))
-
         canvas.addEventListener('touchend',((e)=>{
             e.preventDefault()
 
             this.touched = false
-        })).bind(this)
-
+        }).bind(this))
     }
 
     /*

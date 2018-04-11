@@ -18,23 +18,24 @@ let databus = new DataBus()
 export default class Main {
     constructor () {
         //维护当前的requestAnimationFrame 的id
+        console.log('start')
         this.aniId = 0
         this.restart()
     }
 
     restart() {
+      console.log('start1')
         databus.reset()
-
+        console.log(canvas)
         canvas.removeEventListener(
             'touchstart',
             this.touchHandler
         )
-
+      console.log('start2')
         this.bg = new BackGround(ctx)
         this.player = new Player(ctx)
         this.gameinfo = new GameInfo()
         this.music = new Music()
-
         this.bindLoop = this.loop.bind(this)
         this.hasEventBind = false
 
@@ -45,6 +46,7 @@ export default class Main {
             this.bindLoop,
             canvas
         )
+        console.log('start4')
     }
 
     /*
@@ -67,7 +69,7 @@ export default class Main {
             for(let i = 0,il = databus.enemys.length; i < il; i++){
                 let enemy = databus.enemys[i]
 
-                if(!enemy.isPlaying && enemy.isCollideWith((bullets))){
+                if(!enemy.isPlaying && enemy.isCollideWith(bullets)){
                     enemy.playAnimation()
                     that.music.playExplosion()
 
@@ -129,7 +131,7 @@ export default class Main {
             }
         })
 
-        this.gameinfo.renderGameScore(ctx,databus,score)
+        this.gameinfo.renderGameScore(ctx,databus.score)
 
         //游戏结束时停止帧循环
         if(databus.gameOver) {
