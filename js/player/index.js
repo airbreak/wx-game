@@ -99,6 +99,28 @@ export default  class Player extends Sprite {
                 this.setAirPosAcrossFingerPosZ(x, y)
         }).bind(this))
 
+        canvas.addEventListener('touchend',((e)=>{
+            e.preventDefault()
+
+            this.touched = false
+        })).bind(this)
+
+    }
+
+    /*
+    * 玩家射击操作
+    * 射击时由外部决定
+    * */
+    shoot() {
+        let bullet = databus.pool.getItemByClass('bullet',Bullet)
+
+        bullet.init(
+            this.x + this.width / 2 - bullet.width / 2,
+            this.y - 10,
+            10
+        )
+
+        databus.bullets.push(bullet)
     }
 
 }
