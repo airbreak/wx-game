@@ -18,26 +18,26 @@ let databus = new DataBus()
 export default class Main {
     constructor () {
         //维护当前的requestAnimationFrame 的id
-        console.log('start')
         this.aniId = 0
         this.restart()
     }
 
     restart() {
-      console.log('start1')
+        console.log('restart1')
         databus.reset()
-        console.log(canvas)
         canvas.removeEventListener(
             'touchstart',
             this.touchHandler
         )
-      console.log('start2')
         this.bg = new BackGround(ctx)
         this.player = new Player(ctx)
         this.gameinfo = new GameInfo()
         this.music = new Music()
         this.bindLoop = this.loop.bind(this)
         this.hasEventBind = false
+
+        let area = this.gameinfo.btnArea
+        console.log(area)
 
         // 清除上一局的动画
         window.cancelAnimationFrame(this.aniId)
@@ -46,7 +46,6 @@ export default class Main {
             this.bindLoop,
             canvas
         )
-        console.log('start4')
     }
 
     /*
@@ -135,8 +134,8 @@ export default class Main {
 
         //游戏结束时停止帧循环
         if(databus.gameOver) {
-            this.gameinfo.renderGameScore(ctx,databus.score)
-
+            window.cancelAnimationFrame(this.aniId);
+            this.gameinfo.renderGameOver(ctx,databus.score)
             if( !this.hasEventBind ) {
                 this.hasEventBind = true
                 this.touchHandler = this.touchEventHandler.bind(this)

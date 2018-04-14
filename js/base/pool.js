@@ -18,7 +18,7 @@ export default class Pool {
     * 获取对应的对象池
     * */
     getPoolBySign(name){
-        return this[__.poolDic][name] || ( this[__.poolDic][name] == [])
+        return this[__.poolDic][name] || ( this[__.poolDic][name] = [])
     }
 
     /*
@@ -40,7 +40,6 @@ export default class Pool {
     * 方便后继续使用
     * */
     recover(name, instance){
-        console.log(name)
         this.getPoolBySign(name).push(instance)
     }
 }

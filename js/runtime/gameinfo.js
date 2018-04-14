@@ -58,6 +58,7 @@ export default class GameInfo {
             screenHeight / 2 - 100 + 205
         )
 
+        console.log(123)
         /*
         * 重新开始按钮区域
         * 方便简易判断按钮点击
@@ -68,5 +69,7 @@ export default class GameInfo {
             endX: screenWidth / 2 + 50,
             endY: screenHeight / 2 - 100 + 255
         }
+
+        console.log(this.btnArea)
     }
 }

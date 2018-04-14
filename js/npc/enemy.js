@@ -22,8 +22,8 @@ export default  class Ememy extends Animation {
   }
 
   init(speed) {
-      this._x = rnd(0,window.innerWidth - ENEMY_WIDTH)
-      this._y = -this.height
+      this.x = rnd(0,window.innerWidth - ENEMY_WIDTH)
+      this.y = -this.height
 
       this[__.speed] = speed
 
