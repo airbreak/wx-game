@@ -19,6 +19,7 @@ export default class Main {
     constructor () {
         //维护当前的requestAnimationFrame 的id
         this.aniId = 0
+        this.musicPlayStatus = true
         this.restart()
     }
 
@@ -29,15 +30,20 @@ export default class Main {
             'touchstart',
             this.touchHandler
         )
+        canvas.removeEventListener(
+          'touchstart',
+          this.touchHandlerMusicCtrl
+        )
+        canvas.addEventListener(
+          'touchstart',
+          this.touchHandlerMusicCtrl.bind(this)
+        )
         this.bg = new BackGround(ctx)
         this.player = new Player(ctx)
         this.gameinfo = new GameInfo()
         this.music = new Music()
         this.bindLoop = this.loop.bind(this)
         this.hasEventBind = false
-
-        let area = this.gameinfo.btnArea
-        console.log(area)
 
         // 清除上一局的动画
         window.cancelAnimationFrame(this.aniId)
@@ -46,6 +52,7 @@ export default class Main {
             this.bindLoop,
             canvas
         )
+        this.music.renderCtrlMusicBtn(ctx)
     }
 
     /*
@@ -70,7 +77,9 @@ export default class Main {
 
                 if(!enemy.isPlaying && enemy.isCollideWith(bullets)){
                     enemy.playAnimation()
-                    that.music.playExplosion()
+                    if(that.musicPlayStatus) {
+                        that.music.playExplosion()
+                    }
 
                     bullets.visible = false
 
@@ -107,6 +116,24 @@ export default class Main {
         }
     }
 
+    /*触摸事件处理逻辑, 关闭、开启音乐*/
+    touchHandlerMusicCtrl(e) {
+      e.preventDefault()
+
+      let x = e.touches[0].clientX
+      let y = e.touches[0].clientY
+
+      let area = this.music.btnArea
+
+      if (x >= area.startX
+        && x <= area.endX
+        && y >= area.startY
+        && y <= area.endY) {
+        this.musicPlayStatus = !this.musicPlayStatus
+        this.music.ctrlAudio(this.musicPlayStatus)
+      }
+    }
+
     /*
     * canvas 重绘函数
     * 每一帧重新绘制所有的需要展示的元素
@@ -115,6 +142,7 @@ export default class Main {
         ctx.clearRect(0, 0, canvas.width, canvas.height)
 
         this.bg.render(ctx)
+        this.music.renderCtrlMusicBtn(ctx,this.musicPlayStatus)
 
         databus.bullets
             .concat(databus.enemys)
@@ -139,7 +167,7 @@ export default class Main {
             if( !this.hasEventBind ) {
                 this.hasEventBind = true
                 this.touchHandler = this.touchEventHandler.bind(this)
-                canvas.addEventListener('touchstart',this.touchEventHandler)
+                canvas.addEventListener('touchstart', this.touchHandler)
             }
         }
     }
@@ -165,7 +193,9 @@ export default class Main {
 
         if(databus.frame % 20 ===0) {
             this.player.shoot()
-            this.music.playShoot()
+            if(this.musicPlayStatus) {
+                this.music.playShoot()
+            }
         }
     }
 

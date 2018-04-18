@@ -16,6 +16,61 @@ const PLAYER_HEIGHT = 80
 let databus = new DataBus()
 
 export default  class Player extends Sprite {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     constructor() {
         super(PLAYER_IMG_SRC,PLAYER_WIDTH,PLAYER_HEIGHT)
 
@@ -95,7 +150,6 @@ export default  class Player extends Sprite {
         }).bind(this))
         canvas.addEventListener('touchend',((e)=>{
             e.preventDefault()
-
             this.touched = false
         }).bind(this))
     }

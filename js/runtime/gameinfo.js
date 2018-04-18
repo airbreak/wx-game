@@ -69,7 +69,5 @@ export default class GameInfo {
             endX: screenWidth / 2 + 50,
             endY: screenHeight / 2 - 100 + 255
         }
-
-        console.log(this.btnArea)
     }
 }
